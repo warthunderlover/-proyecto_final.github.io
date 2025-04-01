@@ -3,13 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ</title>
+    <title>Donaciones</title>
     <link rel="stylesheet" href="less/main.less">
 </head>
 <body>
     {{>headers}}
     <main>
-
+        <div class="container">
+            <h1>Formulario de Donaciones</h1>
+            
+            <div class="success-message" id="successMessage">
+                ¡Gracias por tu donación! Tu contribución ayudará a muchas personas.
+            </div>
+            
+            <form id="donationForm">
+                <div class="form-group">
+                    <label for="nombre">Nombre Completo*</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                    <div class="error" id="nombreError">Por favor, ingresa tu nombre completo.</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Correo Electrónico*</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="error" id="emailError">Por favor, ingresa un correo electrónico válido.</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="telefono">Teléfono*</label>
+                    <input type="tel" id="telefono" name="telefono" required>
+                    <div class="error" id="telefonoError">Por favor, ingresa un número de teléfono válido.</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="monto">Monto de Donación*</label>
+                    <select id="monto" name="monto" required>
+                        <option value="">Seleccionar monto</option>
+                        <option value="10">10€</option>
+                        <option value="25">25€</option>
+                        <option value="50">50€</option>
+                        <option value="100">100€</option>
+                        <option value="other">Otro monto</option>
+                    </select>
+                    <div class="error" id="montoError">Por favor, selecciona un monto.</div>
+                </div>
+                
+                <div class="form-group" id="otroMontoContainer" style="display: none;">
+                    <label for="otroMonto">Especificar Monto*</label>
+                    <input type="number" id="otroMonto" name="otroMonto" min="1">
+                    <div class="error" id="otroMontoError">Por favor, ingresa un monto válido.</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="frecuencia">Frecuencia*</label>
+                    <select id="frecuencia" name="frecuencia" required>
+                        <option value="">Seleccionar frecuencia</option>
+                        <option value="unica">Donación única</option>
+                        <option value="mensual">Donación mensual</option>
+                        <option value="anual">Donación anual</option>
+                    </select>
+                    <div class="error" id="frecuenciaError">Por favor, selecciona una frecuencia.</div>
+                </div>
+                
+                <h3>Información de Pago</h3>
+                
+                <div class="form-group card-container">
+                    <label for="tarjeta">Número de Tarjeta*</label>
+                    <input type="text" id="tarjeta" name="tarjeta" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" required>
+                    <div class="error" id="tarjetaError">Por favor, ingresa un número de tarjeta válido.</div>
+                    <div class="card-icon" id="cardIcon"></div>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="vencimiento">Fecha de Vencimiento*</label>
+                            <input type="text" id="vencimiento" name="vencimiento" placeholder="MM/AA" maxlength="5" required>
+                            <div class="error" id="vencimientoError">Por favor, ingresa una fecha válida (MM/AA).</div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="cvv">CVV*</label>
+                            <input type="text" id="cvv" name="cvv" maxlength="4" required>
+                            <div class="error" id="cvvError">Por favor, ingresa un CVV válido.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="titular">Nombre del Titular*</label>
+                    <input type="text" id="titular" name="titular" required>
+                    <div class="error" id="titularError">Por favor, ingresa el nombre del titular de la tarjeta.</div>
+                </div>
+                
+                <button type="submit" id="submitBtn">Realizar Donación</button>
+            </form>
+            
+            <div class="form-footer">
+                <p>Tu donación ayudará a mejorar nuestros programas de seguros para personas con necesidades especiales.</p>
+                <p>Todos los pagos son procesados de forma segura. No almacenamos los datos de tu tarjeta.</p>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const donationForm = document.getElementById('donationForm');
+                const montoSelect = document.getElementById('monto');
+                const otroMontoContainer = document.getElementById('otroMontoContainer');
+                const tarjetaInput = document.getElementById('tarjeta');
+                const vencimientoInput = document.getElementById('vencimiento');
+                const cardIcon = document.getElementById('cardIcon');
+                const successMessage = document.getElementById('successMessage');
+                
+                // Mostrar campo de otro monto cuando se selecciona "Otro monto"
+                montoSelect.addEventListener('change', function() {
+                    if (this.value === 'other') {
+                        otroMontoContainer.style.display = 'block';
+                        document.getElementById('otroMonto').setAttribute('required', true);
+                    } else {
+                        otroMontoContainer.style.display = 'none';
+                        document.getElementById('otroMonto').removeAttribute('required');
+                    }
+                });
+                
+                // Formatear número de tarjeta con espacios
+                tarjetaInput.addEventListener('input', function(e) {
+                    // Eliminar espacios y caracteres no numéricos
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    // Añadir espacios cada 4 dígitos
+                    if (value.length > 0) {
+                        value = value.match(/.{1,4}/g).join(' ');
+                    }
+                    
+                    e.target.value = value;
+                    
+                    // Detectar tipo de tarjeta
+                    detectCardType(value.replace(/\s/g, ''));
+                });
+                
+                // Formatear fecha de vencimiento con /
+                vencimientoInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    if (value.length > 2) {
+                        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                    }
+                    
+                    e.target.value = value;
+                });
+                
+                // Detectar tipo de tarjeta basado en sus primeros dígitos
+                function detectCardType(number) {
+                    let cardType = '';
+                    
+                    // Visa: comienza con 4
+                    if (/^4/.test(number)) {
+                        cardType = 'Visa';
+                        cardIcon.textContent = '💳 Visa';
+                    } 
+                    // Mastercard: comienza con 51-55 o rangos 2221-2720
+                    else if (/^5[1-5]/.test(number) || /^2[2-7][2-7]\d/.test(number)) {
+                        cardType = 'Mastercard';
+                        cardIcon.textContent = '💳 Mastercard';
+                    }
+                    // American Express: comienza con 34 o 37
+                    else if (/^3[47]/.test(number)) {
+                        cardType = 'American Express';
+                        cardIcon.textContent = '💳 Amex';
+                    }
+                    // Discover: comienza con 6011, 622126-622925, 644-649, 65
+                    else if (/^6(?:011|5|4[4-9])/.test(number)) {
+                        cardType = 'Discover';
+                        cardIcon.textContent = '💳 Discover';
+                    }
+                    else {
+                        cardIcon.textContent = '💳';
+                    }
+                    
+                    return cardType;
+                }
+                
+                // Validar tarjeta con algoritmo de Luhn
+                function validateCardNumber(number) {
+                    // Eliminar espacios
+                    number = number.replace(/\s/g, '');
+                    
+                    // Algoritmo de Luhn (Mod 10)
+                    let sum = 0;
+                    let shouldDouble = false;
+                    
+                    // Comenzamos desde el último dígito y vamos hacia atrás
+                    for (let i = number.length - 1; i >= 0; i--) {
+                        let digit = parseInt(number.charAt(i));
+                        
+                        if (shouldDouble) {
+                            digit *= 2;
+                            if (digit > 9) {
+                                digit -= 9;
+                            }
+                        }
+                        
+                        sum += digit;
+                        shouldDouble = !shouldDouble;
+                    }
+                    
+                    return (sum % 10) === 0;
+                }
+                
+                // Validación del formulario al enviar
+                donationForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    let isValid = true;
+                    
+                    // Restablecer errores
+                    document.querySelectorAll('.error').forEach(function(el) {
+                        el.style.display = 'none';
+                    });
+                    
+                    document.querySelectorAll('input, select').forEach(function(el) {
+                        el.classList.remove('input-error');
+                    });
+                    
+                    // Validar nombre
+                    const nombre = document.getElementById('nombre');
+                    if (nombre.value.trim() === '') {
+                        document.getElementById('nombreError').style.display = 'block';
+                        nombre.classList.add('input-error');
+                        isValid = false;
+                    }
+                    
+                    // Validar email
+                    const email = document.getElementById('email');
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email.value)) {
+                        document.getElementById('emailError').style.display = 'block';
+                        email.classList.add('input-error');
+                        isValid = false;
+                    }
+                    
+                    // Validar teléfono
+                    
+                    
+                    // Validar monto
+                    if (montoSelect.value === '') {
+                        document.getElementById('montoError').style.display = 'block';
+                        montoSelect.classList.add('input-error');
+                        isValid = false;
+                    } else if (montoSelect.value === 'other') {
+                        const otroMonto = document.getElementById('otroMonto');
+                        if (otroMonto.value <= 0) {
+                            document.getElementById('otroMontoError').style.display = 'block';
+                            otroMonto.classList.add('input-error');
+                            isValid = false;
+                        }
+                    }
+                    
+                    // Validar frecuencia
+                    const frecuencia = document.getElementById('frecuencia');
+                    if (frecuencia.value === '') {
+                        document.getElementById('frecuenciaError').style.display = 'block';
+                        frecuencia.classList.add('input-error');
+                        isValid = false;
+                    }
+                    
+                    // Validar número de tarjeta (incluyendo algoritmo de Luhn)
+                    const tarjeta = document.getElementById('tarjeta');
+                    const tarjetaNumeros = tarjeta.value.replace(/\s/g, '');
+                    if (tarjetaNumeros.length < 13 || !validateCardNumber(tarjetaNumeros)) {
+                        document.getElementById('tarjetaError').style.display = 'block';
+                        tarjeta.classList.add('input-error');
+                        isValid = false;
+                    }
+                    
+                    // Validar fecha de vencimiento
+                    const vencimiento = document.getElementById('vencimiento');
+                    const fechaPartes = vencimiento.value.split('/');
+                    if (fechaPartes.length !== 2 || 
+                        !/^\d{2}$/.test(fechaPartes[0]) || 
+                        parseInt(fechaPartes[0]) < 1 || 
+                        parseInt(fechaPartes[0]) > 12 || 
+                        !/^\d{2}$/.test(fechaPartes[1])) {
+                        document.getElementById('vencimientoError').style.display = 'block';
+                        vencimiento.classList.add('input-error');
+                        isValid = false;
+                    } else {
+                        // Validar que la fecha no esté vencida
+                        const ahora = new Date();
+                        const mesActual = ahora.getMonth() + 1; // Enero es 0
+                        const añoActual = ahora.getFullYear() % 100; // Últimos dos dígitos
+                        
+                        const mesVencimiento = parseInt(fechaPartes[0]);
+                        const añoVencimiento = parseInt(fechaPartes[1]);
+                        
+                        if ((añoVencimiento < añoActual) || 
+                            (añoVencimiento === añoActual && mesVencimiento < mesActual)) {
+                            document.getElementById('vencimientoError').textContent = 'La tarjeta está vencida.';
+                            document.getElementById('vencimientoError').style.display = 'block';
+                            vencimiento.classList.add('input-error');
+                            isValid = false;
+                        }
+                    }
+                    
+                    // Validar CVV
+                    const cvv = document.getElementById('cvv');
+                    if (!/^\d{3,4}$/.test(cvv.value)) {
+                        document.getElementById('cvvError').style.display = 'block';
+                        cvv.classList.add('input-error');
+                        isValid = false;
+                    }
+                    
+                    // Validar titular
+                    const titular = document.getElementById('titular');
+                    if (titular.value.trim() === '') {
+                        document.getElementById('titularError').style.display = 'block';
+                        titular.classList.add('input-error');
+                        isValid = false;
+                    }
+                    
+                    // Si todo es válido, mostrar mensaje de éxito (simulación)
+                    if (isValid) {
+                        donationForm.reset();
+                        successMessage.style.display = 'block';
+                        setTimeout(function() {
+                            successMessage.style.display = 'none';
+                        }, 5000);
+                    }
+                });
+            });
+        </script>
     </main>
     {{>footer}}
 </body>
