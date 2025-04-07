@@ -6,21 +6,23 @@ header {
     background: white;
     border-bottom: 2px solid @primary-color;
 
-    .logo{
+    .logo {
         width: 150px;
         height: 60px;
-        img{
+
+        img {
             object-fit: cover;
             height: 100%;
             width: 100%;
         }
-        img:hover{
+
+        img:hover {
             cursor: pointer;
         }
-    } 
+    }
 
-    nav{
-        
+    nav {
+
         ul {
             list-style: none;
             display: flex;
@@ -55,23 +57,12 @@ header {
                         width: 100%;
                     }
                 }
-
-                .active {
-                    color: @primary-color;
-                    font-weight: bold;
-
-                    &:after {
-                        width: 100%;
-                    }
-                }
-                
-                // Estilos para el dropdown
                 &.dropdown {
-                    
-                    > a {
+
+                    >a {
                         display: flex;
                         align-items: center;
-                        
+            
                         &:after {
                             content: '';
                             position: absolute;
@@ -82,62 +73,78 @@ header {
                             bottom: -3px;
                             transition: width @hover-duration ease-in-out;
                         }
-                        
+            
                         // Indicador de dropdown
                         &:before {
                             content: '▼';
-                            font-size: 0.7em;
+                            font-size: 0.7rem;
                             margin-left: 5px;
+                            margin-right: 5px;
+                            color: @primary-color;
                             transition: transform @hover-duration ease-in-out;
                         }
                     }
-                    
-                    &:hover > a:before {
+            
+                    &:hover>a:before {
                         transform: rotate(180deg);
                     }
-                    
+            
                     .dropdown-content {
                         display: none;
                         position: absolute;
                         background: white;
-                        min-width: 200px;
-                        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+                        width: 150px;
+                        left: 45px;
                         z-index: 1;
-                        left: -45%;
+                        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
                         transform: translateX(-90%);
-                        padding: 5px 0;
-                        
+            
+            
                         a {
-                            padding: 8px 25px;
+            
                             display: block;
                             text-align: center;
-                            
+            
                             &:after {
                                 bottom: 0;
-                                left: 25px;
-                                right: 25px;
+                                left: 5px;
+                                right: 5px;
                                 width: 0;
                             }
-                            
+            
                             &:hover:after {
-                                width: calc(100% - 50px);
+                                width: calc(100% - 30px);
                             }
                         }
                     }
-                    
+            
                     &:hover .dropdown-content {
                         display: block;
                     }
                 }
+                .active {
+                    color: @primary-color;
+                    font-weight: bold;
+
+                    &:after {
+                        width: 100%;
+                    }
+                }
+
+
             }
-        }   
+        }
     }
+
+    
 }
+
 // A partir de 768px, cambiar a fila
 @media (min-width: 767px) {
-    header{
+    header {
         flex-direction: row;
         justify-content: space-between;
+
         nav ul {
             flex-direction: row;
             gap: 20px;
@@ -145,3 +152,5 @@ header {
     }
 
 }
+
+@media(min-width:1023px) {}
