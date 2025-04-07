@@ -1,17 +1,17 @@
 .eventos-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px;
-    font-family: 'Roboto', sans-serif;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  font-family: 'Roboto', sans-serif;
+
   h1 {
-    color: #333;
+    color: @primary-color;
+    margin-top: 10px;
     margin-bottom: 20px;
-    font-size: 24px;
+    font-size: 30px;
   }
-  
+
   .card {
     display: flex;
     align-items: center;
@@ -23,11 +23,11 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #f9f9f9;
   }
-  
+
   .logo {
     flex: 0 0 100px;
     margin-right: 20px;
-  
+
     img {
       width: 100px;
       height: 100px;
@@ -38,63 +38,76 @@
       border: 1px solid #ddd;
     }
   }
-  
+
   .detalles {
     flex-grow: 1;
-  
+
     h2 {
-      color: #333;
+      color: @second;
       margin: 0 0 10px 0;
       font-size: 18px;
     }
-  
+
     p {
       font-size: 14px;
-      color: #555;
+      color: @second;
       margin: 0 0 10px 0;
     }
   }
-  
-  .registro-form {
-    width: 90%;
+}
+
+
+.registro-form {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+
+  h2 {
     display: flex;
     flex-direction: column;
-  
-    .form-group {
-      margin-bottom: 20px;
-  
-      label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-        color: #333;
-      }
-  
-      input, select, textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 14px;
-      }
-  
-      textarea {
-        resize: none;
-        height: 100px;
-      }
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: @second;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+      color: @second;
     }
-  
-    .cta-button {
-      background-color: #28a745;
-      color: white;
-      padding: 12px 20px;
-      border: none;
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
       border-radius: 5px;
-      cursor: pointer;
-  
-      &:hover {
-        background-color: #218838;
-      }
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: none;
+      height: 100px;
     }
   }
-  
+
+  .cta-button {
+    background-color: #28a745;
+    color: white;
+    text-transform: capitalize;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #218838;
+    }
+  }
+}
