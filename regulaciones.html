@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>regulaciones</title>
+  <link rel="stylesheet" type="text/css" href="estilos.css">
+  <script src="https://cdn.jsdelivr.net/npm/less@4.1.1"></script>
+</head>
+<body>
+  {{>headers}}
+  <main class="container">
+    <h1>Leyes y Normativas</h1>
+
+    <ul class="document-list">
+      <li class="document-item">
+        <div class="document-header">
+          <span class="doc-title">Leyes Vigentes</span>
+          <button class="toggle-btn">Ver</button>
+        </div>
+        <div class="document-content">
+          <p>Artículo No. 1 Esta ley regula la Organización, Funcionamiento, Fusión, Conversión, Escisión, Liquidación y
+            Supervisión de las instituciones que realicen actividades u operaciones de seguros y reaseguros, y tiene como
+            propósitos:
+            1. Proteger a Tomadores y Suscriptores, Asegurados y Beneficiarios.
+            2. Promover el fortalecimiento patrimonial de las Instituciones de Seguros y,
+            3. Fomentar un entorno de libre competitividad entre las Instituciones de Seguros.
+            Artículo 2. A esta Ley quedan sujetas las personas jurídicas nacionales o extranjeras domiciliadas en el país, que en
+            forma habitual y sistemática, se dediquen a comercializar seguros o fianzas, mediante la celebración de contratos
+            que las obliguen, dentro de sus límites de cobertura y a cambio de una prima, a indemnizar a otra persona natural o
+            jurídica un determinado daño o a satisfacer un capital, una renta u otras prestaciones, en el caso de realizarse el
+            riesgo asegurado previsto en el contrato. También quedan sujetas a esta Ley, las sociedades nacionales o
+            extranjeras autorizadas para ejercer el comercio en Honduras, que practiquen las operaciones de reaseguro o
+            reafianzamiento de contratos de seguros o fianzas suscritos por las instituciones de seguros o fianzas.</p>
+        </div>
+      </li>
+
+      <li class="document-item">
+        <div class="document-header">
+          <span class="doc-title">Requisitos</span>
+          <button class="toggle-btn">Ver</button>
+        </div>
+        <div class="document-content">
+          <p>Para operar en el sector asegurador en Honduras, las instituciones deben cumplir con requisitos como: 
+            Contar con un estudio técnico, económico y financiero 
+            Depositar o invertir al menos el 10% del capital mínimo de la sociedad en el Banco Central de Honduras o en títulos valores del Estado 
+            Radicar permanentemente en el país el capital mínimo de la sociedad 
+            Obligarse a responder por las operaciones que realicen en el país 
+            Presentar la solicitud de autorización ante la Comisión Nacional de Bancos y Seguros (CNBS) 
+            Demostrar el cumplimiento de las normas prudenciales establecidas por la legislación o la Autoridad Supervisora de su jurisdicción 
+            Las instituciones extranjeras que quieran operar en Honduras deben presentar la solicitud de autorización mediante un Apoderado Legal debidamente acreditado ante la CNBS. 
+            Para ser agente de seguros, se debe: 
+            Informarse sobre la carrera
+            Acudir con la Aseguradora/Promotoría de elección para comenzar el proceso de reclutamiento
+            Asistir a las capacitaciones para aprobar el examen
+            Tomar el examen para obtener la cédula profesional
+            Afiliarse a la aseguradora.</p>
+        </div>
+      </li>
+
+      <li class="document-item">
+        <div class="document-header">
+          <span class="doc-title">Normativas</span>
+          <button class="toggle-btn">Ver</button>
+        </div>
+        <div class="document-content">
+          <p>En Honduras, la normativa del sector asegurador está regulada por la Ley de Instituciones de Seguros y Reaseguros, la Ley de la Comisión Nacional de Bancos y Seguros, y diversos reglamentos. 
+            Ley de Instituciones de Seguros y Reaseguros
+            Esta ley establece que las instituciones de seguros pueden dedicarse a actividades relacionadas con seguros, fianzas, inversiones, y venta de bienes. 
+            Clasifica a las instituciones de seguros en tres grupos. 
+            Establece que los directores, funcionarios, y empleados de las instituciones de seguros son responsables por los daños y perjuicios que causen. 
+            Ley de la Comisión Nacional de Bancos y Seguros 
+            Esta ley regula el funcionamiento de la Comisión Nacional de Bancos y Seguros.
+            Reglamentos 
+            Reglamento de Intermediación de Seguros y Finanzas
+            Reglamento del Registro Especial del Mercado de Valores
+            Reglamento sobre Constitución de Reservas Técnicas
+            Reglamento de operaciones de reaseguro y registro de reaseguradores y corredores de reaseguro del exterior
+            La Comisión Nacional de Bancos y Seguros (CNBS) ha realizado reformas a la Ley de Instituciones de Seguros y Reaseguros y al reglamento de inversiones financieras. .</p>
+        </div>
+      </li>
+    </ul>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll('.toggle-btn');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const currentItem = button.closest('.document-item');
+        const currentContent = currentItem.querySelector('.document-content');
+        const isOpen = currentContent.classList.contains('active');
+
+        
+        document.querySelectorAll('.document-content').forEach(content => {
+          content.classList.remove('active');
+        });
+
+        
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+          btn.textContent = 'Ver';
+        });
+
+        
+        if (!isOpen) {
+          currentContent.classList.add('active');
+          button.textContent = 'Ocultar';
+        }
+      });
+    });
+  </script>
+   {{>footer}}
+</body>
+</html>
