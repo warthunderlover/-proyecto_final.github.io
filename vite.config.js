@@ -23,7 +23,7 @@ const obtenerEntradasHTML = ()=>{
 
 export default defineConfig({
     appType: 'mpa',
-    base: process.env.DEPLOY_BASE_URL,
+    base: process.env.DEPLOY_BASE_URL || '/',
     build: {
         rollupOptions: {
             input: obtenerEntradasHTML()
@@ -32,8 +32,11 @@ export default defineConfig({
     plugins: [
         handlebars({
             partialDirectory : resolve(__dirname, 'partials'),
-            //context: getpagecontext
-            
+            context: (pagePath) => {
+                return {
+                    DEPLOY_BASE_URL: process.env.DEPLOY_BASE_URL || '/'
+                };
+            }
         }),
         htmlPurge({})
     ]
